@@ -15,7 +15,7 @@ def category(celsius):
 
     Cold is below 15, Mild is 15 up to 28, Hot is 28 and above.
     """
-    if celsius < 15:
+    if celsius < 10:
         return "Cold"
     elif celsius < 28:
         return "Mild"
