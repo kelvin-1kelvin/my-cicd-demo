@@ -1,0 +1,46 @@
+# NPG_student_ci_cd_workflow.yml  (Cloud Computing - Session 12: CI/CD -
+# STUDENT reproduce guide version)
+# ============================================================================
+# Your own two-job pipeline: "test" runs on every push; "deploy" only runs
+# after "test" succeeds, and only on the main branch.
+#
+# This file must be placed at this exact path inside YOUR repository,
+# renamed, for GitHub to run it:
+#     .github/workflows/ci-cd.yml
+# ============================================================================
+name: My CI/CD demo
+
+on:
+  push:
+    branches: ["**"]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run the test suite
+        run: python -m unittest NPG_test_temp
+
+  deploy:
+    name: Deploy (simulated)
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: "Deploy to production (simulated)"
+        run: |
+          echo "Deploying to production..."
+          echo "Deployed commit ${{ github.sha }} at $(date -u)" > deployed.txt
+          cat deployed.txt
